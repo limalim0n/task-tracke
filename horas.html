@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Task Tracker</h1>
+        <form id="taskForm">
+            <label for="taskName">Task Name:</label>
+            <input type="text" id="taskName" required>
+            <label for="startTime">Start Time:</label>
+            <input type="datetime-local" id="startTime" required>
+            <label for="endTime">End Time:</label>
+            <input type="datetime-local" id="endTime" required>
+            <button type="submit">Add Task</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Total Hours</th>
+                </tr>
+            </thead>
+            <tbody id="taskTableBody">
+                <!-- Tasks will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('taskForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const taskName = document.getElementById('taskName').value;
+            const startTime = new Date(document.getElementById('startTime').value);
+            const endTime = new Date(document.getElementById('endTime').value);
+            
+            if (endTime <= startTime) {
+                alert('End time must be after start time');
+                return;
+            }
+            
+            const totalHours = ((endTime - startTime) / 1000 / 60 / 60).toFixed(2);
+            
+            const tableBody = document.getElementById('taskTableBody');
+            const newRow = tableBody.insertRow();
+            
+            const taskCell = newRow.insertCell(0);
+            const startCell = newRow.insertCell(1);
+            const endCell = newRow.insertCell(2);
+            const totalCell = newRow.insertCell(3);
+            
+            taskCell.textContent = taskName;
+            startCell.textContent = startTime.toLocaleString();
+            endCell.textContent = endTime.toLocaleString();
+            totalCell.textContent = totalHours;
+            
+            document.getElementById('taskForm').reset();
+        });
+    </script>
+</body>
+</html>
